@@ -1,12 +1,13 @@
 /**
  * Main application page with repository search and score display
- * Features animated score counter and detailed breakdown visualization
+ * Features animated score counter, detailed breakdown visualisation, and dark mode
  */
 
 import { useState } from "react";
 import Head from "next/head";
 import CountUp from "react-countup";
 import GitHubScorerService from "../lib/GitScore-Copilot-service";
+import { useDarkMode } from "../lib/useDarkMode";
 
 export default function Home() {
     const [input, setInput] = useState("");
@@ -15,6 +16,7 @@ export default function Home() {
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
     const [showTokenInput, setShowTokenInput] = useState(true);
+    const { darkMode, toggleDarkMode } = useDarkMode();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -44,7 +46,7 @@ export default function Home() {
         setResult(null);
 
         try {
-            // Initialize service with token
+            // Initialise service with token
             GitHubScorerService.initialize(githubToken);
 
             // Calculate score
@@ -78,7 +80,7 @@ export default function Home() {
                 <title>GitHub Repository Scorer</title>
                 <meta
                     name="description"
-                    content="Analyze and score GitHub repositories based on quality metrics"
+                    content="Analyse and score GitHub repositories based on quality metrics"
                 />
                 <meta
                     name="viewport"
@@ -87,32 +89,59 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <div className="min-h-screen bg-gray-50">
+            {/* Dark Mode Toggle */}
+            <button
+                onClick={toggleDarkMode}
+                className="dark-mode-toggle"
+                title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+            >
+                {darkMode ? (
+                    <svg className="w-6 h-6 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
+                    </svg>
+                ) : (
+                    <svg className="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                    </svg>
+                )}
+            </button>
+
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
                 {/* Header */}
-                <header className="bg-white shadow-sm border-b border-gray-200">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                         <div className="text-center">
-                            <h1 className="text-4xl font-bold text-github-900 mb-2">
+                            <h1 className="text-5xl font-bold text-primary mb-3 tracking-tight">
                                 GitHub Repository Scorer
                             </h1>
-                            <p className="text-lg text-github-600">
-                                Analyze repository quality with AI-powered
-                                scoring
+                            <p className="text-xl text-secondary max-w-2xl mx-auto">
+                                Analyse repository quality with comprehensive scoring metrics
                             </p>
+                            <div className="mt-4 flex justify-center space-x-2">
+                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+                                    ✨ Enhanced with Dark Mode
+                                </span>
+                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                                    🇬🇧 UK English
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </header>
                         </div>
                     </div>
                 </header>
 
                 {/* Main Content */}
-                <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
                     {/* Search Form */}
-                    <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-                        <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="card-gradient rounded-xl shadow-xl p-8 mb-10">
+                        <form onSubmit={handleSubmit} className="space-y-6">
                             {showTokenInput && (
-                                <div>
+                                <div className="space-y-2">
                                     <label
                                         htmlFor="token-input"
-                                        className="block text-sm font-medium text-gray-700 mb-2"
+                                        className="block text-sm font-semibold text-primary mb-2"
                                     >
                                         GitHub Personal Access Token
                                     </label>
@@ -127,24 +156,24 @@ export default function Home() {
                                         className="input-field"
                                         disabled={loading}
                                     />
-                                    <p className="text-xs text-gray-500 mt-1">
+                                    <p className="text-xs text-secondary mt-2">
                                         Create a token at{" "}
                                         <a
                                             href="https://github.com/settings/tokens"
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-blue-600 hover:underline"
+                                            className="text-green-600 dark:text-green-400 hover:underline font-medium"
                                         >
                                             GitHub Settings
                                         </a>{" "}
-                                        with &lsquo;public_repo&rsquo; scope
+                                        with 'public_repo' scope
                                     </p>
                                 </div>
                             )}
-                            <div>
+                            <div className="space-y-2">
                                 <label
                                     htmlFor="repo-input"
-                                    className="block text-sm font-medium text-gray-700 mb-2"
+                                    className="block text-sm font-semibold text-primary mb-2"
                                 >
                                     Repository URL or Owner/Repository
                                 </label>
@@ -168,8 +197,8 @@ export default function Home() {
                                 className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {loading
-                                    ? "Analyzing..."
-                                    : "Analyze Repository"}
+                                    ? "Analysing Repository..."
+                                    : "Analyse Repository"}
                             </button>
                             {!showTokenInput && (
                                 <button
