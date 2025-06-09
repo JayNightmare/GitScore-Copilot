@@ -6,7 +6,7 @@
 import { useState } from "react";
 import Head from "next/head";
 import CountUp from "react-countup";
-import GitHubScorerService from "../lib/github-scorer-service";
+import GitHubScorerService from "../lib/GitScore-Copilot-service";
 
 export default function Home() {
     const [input, setInput] = useState("");

@@ -12,14 +12,19 @@ const nextConfig = {
     images: {
         unoptimized: true,
     },
-    assetPrefix: process.env.NODE_ENV === "production" ? "/github-scorer" : "",
-    basePath: process.env.NODE_ENV === "production" ? "/github-scorer" : "",
+    // Configure for GitHub Pages deployment
+    assetPrefix: process.env.NODE_ENV === "production" ? "/GitScore-Copilot" : "",
+    basePath: process.env.NODE_ENV === "production" ? "/GitScore-Copilot" : "",
     eslint: {
         ignoreDuringBuilds: true,
     },
-    // Disable API routes for static export
+    // Disable server-side features for static export
     experimental: {
         missingSuspenseWithCSRBailout: false,
+    },
+    // Ensure static export works properly
+    env: {
+        customKey: 'static-export',
     },
 };
 

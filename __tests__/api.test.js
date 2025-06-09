@@ -45,7 +45,7 @@ Object.defineProperty(window, "localStorage", {
 });
 
 // Import the service after mocking
-const githubScorerService = require("../lib/github-scorer-service.js").default;
+const githubScorerService = require("../lib/GitScore-Copilot-service.js").default;
 
 describe("GitHubScorerService", () => {
     let mockGraphqlClient;

@@ -1,5 +1,5 @@
 {
-    "name": "github-scorer",
+    "name": "GitScore-Copilot",
     "version": "1.0.0",
     "description": "A static GitHub repository scoring site that runs on GitHub Pages",
     "private": true,

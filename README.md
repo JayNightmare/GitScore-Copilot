@@ -25,7 +25,7 @@ A static site built with Next.js that analyzes and scores GitHub repositories ba
 
     ```bash
     git clone <your-repo-url>
-    cd github-scorer
+    cd GitScore-Copilot
     npm install
     ```
 
@@ -64,7 +64,7 @@ No server-side configuration needed! The app uses client-side authentication:
 
 1. **Setup Repository**:
 
-    - Create a new repository named `github-scorer` on GitHub
+    - Create a new repository named `GitScore-Copilot` on GitHub
     - Push this code to the main branch
 
 2. **Configure GitHub Pages**:
@@ -74,7 +74,7 @@ No server-side configuration needed! The app uses client-side authentication:
     - The included workflow will automatically build and deploy
 
 3. **Access Site**:
-    - Site will be available at `https://username.github.io/github-scorer`
+    - Site will be available at `https://username.github.io/GitScore-Copilot`
     - Updates deploy automatically on push to main branch
 
 ### Manual Static Deployment
@@ -88,6 +88,14 @@ No server-side configuration needed! The app uses client-side authentication:
 2. **Deploy `out/` Directory**:
     - Upload the contents of `out/` to any static hosting service
     - Examples: Netlify, Vercel, GitHub Pages, AWS S3, etc.
+
+### Troubleshooting Deployment
+
+- **Missing Styles**: Ensure `.nojekyll` file exists in the output directory
+- **404 Errors**: Check that `basePath` in `next.config.js` matches your repository name
+- **Build Failures**: Verify all tests pass with `npm test`
+- **Asset Loading Issues**: Confirm GitHub Pages source is set to "GitHub Actions"
+- **Test Deployment**: Run `scripts\test-deployment.bat` (Windows) to verify build output
 
 ## Architecture
 

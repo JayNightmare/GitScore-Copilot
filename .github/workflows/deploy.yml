@@ -44,7 +44,9 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   MONGODB_URI: ${{ secrets.MONGODB_URI }}
-              run: npm run build
+              run: |
+                  npm run build
+                  touch ./out/.nojekyll
 
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
