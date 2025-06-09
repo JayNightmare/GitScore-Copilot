@@ -4,41 +4,44 @@ A static site built with Next.js that analyzes and scores GitHub repositories ba
 
 ## Features
 
-- **Comprehensive Scoring**: Analyzes README quality, license compliance, stars, forks, recent commits, CI/CD workflows, and more
-- **Static Site**: Exports to pure HTML/CSS/JS for GitHub Pages deployment
-- **Caching**: MongoDB integration for performance optimization
-- **Modern UI**: Beautiful, responsive design with Tailwind CSS
-- **Real-time Updates**: Live score animation and detailed breakdowns
+-   **Comprehensive Scoring**: Analyzes README quality, license compliance, stars, forks, recent commits, CI/CD workflows, and more
+-   **Static Site**: Exports to pure HTML/CSS/JS for GitHub Pages deployment
+-   **Caching**: MongoDB integration for performance optimization
+-   **Modern UI**: Beautiful, responsive design with Tailwind CSS
+-   **Real-time Updates**: Live score animation and detailed breakdowns
 
 ## Scoring Metrics
 
-- **README Quality** (20%): Documentation completeness, structure, examples
-- **CI/CD Workflows** (20%): Automated testing and deployment practices  
-- **Popularity** (18%): Stars and community engagement
-- **License** (15%): Legal compliance and license type
-- **Activity** (15%): Recent commits and maintenance
-- **Development** (12%): Forks and contributor interest
+-   **README Quality** (20%): Documentation completeness, structure, examples
+-   **CI/CD Workflows** (20%): Automated testing and deployment practices
+-   **Popularity** (18%): Stars and community engagement
+-   **License** (15%): Legal compliance and license type
+-   **Activity** (15%): Recent commits and maintenance
+-   **Development** (12%): Forks and contributor interest
 
 ## Quick Start
 
 1. **Clone and Install**
-   ```bash
-   git clone <your-repo-url>
-   cd github-scorer
-   npm install
-   ```
+
+    ```bash
+    git clone <your-repo-url>
+    cd github-scorer
+    npm install
+    ```
 
 2. **Development**
-   ```bash
-   npm run dev
-   ```
-   Open [http://localhost:3000](http://localhost:3000) and enter your GitHub token in the UI.
+
+    ```bash
+    npm run dev
+    ```
+
+    Open [http://localhost:3000](http://localhost:3000) and enter your GitHub token in the UI.
 
 3. **Build and Deploy**
-   ```bash
-   npm run build
-   ```
-   The static files will be generated in the `out/` directory.
+    ```bash
+    npm run build
+    ```
+    The static files will be generated in the `out/` directory.
 
 ## Usage
 
@@ -50,45 +53,49 @@ A static site built with Next.js that analyzes and scores GitHub repositories ba
 ## Authentication
 
 No server-side configuration needed! The app uses client-side authentication:
-- GitHub Personal Access Token is entered directly in the UI
-- Tokens are stored securely in browser memory only
-- No server-side environment variables required
+
+-   GitHub Personal Access Token is entered directly in the UI
+-   Tokens are stored securely in browser memory only
+-   No server-side environment variables required
 
 ## Deployment
 
 ### GitHub Pages (Recommended)
 
 1. **Setup Repository**:
-   - Create a new repository named `github-scorer` on GitHub
-   - Push this code to the main branch
+
+    - Create a new repository named `github-scorer` on GitHub
+    - Push this code to the main branch
 
 2. **Configure GitHub Pages**:
-   - Go to repository Settings → Pages
-   - Source: "GitHub Actions" 
-   - The included workflow will automatically build and deploy
+
+    - Go to repository Settings → Pages
+    - Source: "GitHub Actions"
+    - The included workflow will automatically build and deploy
 
 3. **Access Site**:
-   - Site will be available at `https://username.github.io/github-scorer`
-   - Updates deploy automatically on push to main branch
+    - Site will be available at `https://username.github.io/github-scorer`
+    - Updates deploy automatically on push to main branch
 
 ### Manual Static Deployment
 
 1. **Build Static Files**:
-   ```bash
-   npm run build
-   ```
+
+    ```bash
+    npm run build
+    ```
 
 2. **Deploy `out/` Directory**:
-   - Upload the contents of `out/` to any static hosting service
-   - Examples: Netlify, Vercel, GitHub Pages, AWS S3, etc.
+    - Upload the contents of `out/` to any static hosting service
+    - Examples: Netlify, Vercel, GitHub Pages, AWS S3, etc.
 
 ## Architecture
 
-- **Frontend**: Next.js 14 with React and Tailwind CSS
-- **API**: GitHub GraphQL API via @octokit/graphql (client-side)
-- **Caching**: localStorage with 1-hour TTL for performance
-- **Deployment**: Static export compatible with GitHub Pages
-- **Authentication**: Client-side GitHub token input (no server required)
+-   **Frontend**: Next.js 14 with React and Tailwind CSS
+-   **API**: GitHub GraphQL API via @octokit/graphql (client-side)
+-   **Caching**: localStorage with 1-hour TTL for performance
+-   **Deployment**: Static export compatible with GitHub Pages
+-   **Authentication**: Client-side GitHub token input (no server required)
 
 ## Development
 
