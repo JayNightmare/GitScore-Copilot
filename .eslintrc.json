@@ -1,0 +1,7 @@
+/**
+ * ESLint configuration for Next.js project
+ */
+
+{
+  "extends": "next/core-web-vitals"
+}

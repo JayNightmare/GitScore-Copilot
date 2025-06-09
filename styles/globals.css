@@ -1,0 +1,31 @@
+/**
+ * Global CSS styles with Tailwind CSS imports and custom utilities
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+}
+
+@layer components {
+  .score-card {
+    @apply bg-white rounded-lg shadow-lg p-6 border border-gray-200 hover:shadow-xl transition-shadow duration-300;
+  }
+  
+  .metric-item {
+    @apply flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0;
+  }
+  
+  .btn-primary {
+    @apply bg-github-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-github-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-github-500 focus:ring-offset-2;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-github-500 focus:border-transparent outline-none transition-all duration-200;
+  }
+}
