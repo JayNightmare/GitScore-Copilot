@@ -128,9 +128,6 @@ export default function Home() {
                         </div>
                     </div>
                 </header>
-                        </div>
-                    </div>
-                </header>
 
                 {/* Main Content */}
                 <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -166,7 +163,7 @@ export default function Home() {
                                         >
                                             GitHub Settings
                                         </a>{" "}
-                                        with 'public_repo' scope
+                                        with &apos;public_repo&apos; scope
                                     </p>
                                 </div>
                             )}
@@ -204,7 +201,7 @@ export default function Home() {
                                 <button
                                     type="button"
                                     onClick={() => setShowTokenInput(true)}
-                                    className="text-sm text-gray-600 hover:text-gray-800 underline"
+                                    className="btn-secondary text-sm mt-2"
                                 >
                                     Change GitHub Token
                                 </button>
@@ -214,10 +211,15 @@ export default function Home() {
 
                     {/* Error Display */}
                     {error && (
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8 animate-fade-in">
-                            <div className="flex">
+                        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-6 mb-8 animate-fade-in">
+                            <div className="flex items-start">
+                                <div className="flex-shrink-0">
+                                    <svg className="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
                                 <div className="ml-3">
-                                    <h3 className="text-sm font-medium text-red-800">
+                                    <h3 className="text-sm font-semibold text-red-800 dark:text-red-200">
                                         Error
                                     </h3>
                                     <p className="text-sm text-red-700 mt-1">
@@ -233,28 +235,34 @@ export default function Home() {
                         <div className="space-y-6 animate-slide-up">
                             {/* Repository Info */}
                             <div className="score-card">
-                                <div className="flex items-start justify-between mb-4">
-                                    <div>
-                                        <h2 className="text-2xl font-bold text-github-900 mb-1">
-                                            {result.repository.name}
-                                        </h2>
-                                        <p className="text-github-600 mb-2">
+                                <div className="flex items-start justify-between mb-6">
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-3 mb-2">
+                                            <h2 className="text-3xl font-bold text-primary">
+                                                {result.repository.name}
+                                            </h2>
+                                            {result.cached && (
+                                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                                                    📦 Cached {result.cacheAge}m ago
+                                                </span>
+                                            )}
+                                        </div>
+                                        <p className="text-secondary mb-4 text-lg">
                                             {result.repository.description}
                                         </p>
-                                        <div className="flex items-center space-x-4 text-sm text-github-500">
-                                            <span>
-                                                ⭐ {result.repository.stars}
+                                        <div className="flex flex-wrap items-center gap-4 text-sm text-secondary">
+                                            <span className="flex items-center gap-1">
+                                                <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                                </svg>
+                                                {result.repository.stars?.toLocaleString() || 0}
                                             </span>
-                                            <span>
-                                                🔄 {result.repository.forks}
+                                            <span className="flex items-center gap-1">
+                                                🔄 {result.repository.forks?.toLocaleString() || 0}
                                             </span>
-                                            <span>
-                                                📝 {result.repository.language}
-                                            </span>
-                                            {result.cached && (
-                                                <span className="text-blue-600">
-                                                    📦 Cached ({result.cacheAge}
-                                                    m ago)
+                                            {result.repository.language && (
+                                                <span className="flex items-center gap-1">
+                                                    💻 {result.repository.language}
                                                 </span>
                                             )}
                                         </div>
@@ -263,10 +271,11 @@ export default function Home() {
                                         href={result.repository.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-github-600 hover:text-github-900 transition-colors"
+                                        className="text-secondary hover:text-primary transition-all duration-200 hover:scale-110"
+                                        title="View on GitHub"
                                     >
                                         <svg
-                                            className="w-6 h-6"
+                                            className="w-8 h-8"
                                             fill="currentColor"
                                             viewBox="0 0 24 24"
                                         >
@@ -278,29 +287,32 @@ export default function Home() {
 
                             {/* Score Display */}
                             <div className="score-card text-center">
-                                <h3 className="text-lg font-semibold text-github-700 mb-4">
-                                    Repository Score
+                                <h3 className="text-xl font-semibold text-primary mb-6">
+                                    Repository Quality Score
                                 </h3>
-                                <div
-                                    className={`text-6xl font-bold mb-2 ${getScoreColor(
-                                        result.score
-                                    )}`}
-                                >
-                                    <CountUp
-                                        end={result.score}
-                                        duration={2}
-                                        decimals={1}
-                                        decimal="."
-                                    />
-                                    <span className="text-3xl text-github-400">
-                                        /10
-                                    </span>
-                                </div>
-                                <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
+                                <div className="relative inline-block">
                                     <div
-                                        className={`h-4 rounded-full transition-all duration-1000 ease-out ${getScoreBackground(
+                                        className={`text-7xl font-bold mb-2 ${getScoreColor(
                                             result.score
-                                        )}`}
+                                        )} drop-shadow-lg`}
+                                    >
+                                        <CountUp
+                                            end={result.score}
+                                            duration={2.5}
+                                            decimals={1}
+                                            decimal="."
+                                        />
+                                        <span className="text-3xl text-secondary">
+                                            /10
+                                        </span>
+                                    </div>
+                                    <div className="absolute -inset-4 bg-gradient-to-r from-green-400 to-blue-500 rounded-full opacity-20 blur-xl animate-pulse"></div>
+                                </div>
+                                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-5 mb-6 overflow-hidden">
+                                    <div
+                                        className={`h-5 rounded-full transition-all duration-2000 ease-out ${getScoreBackground(
+                                            result.score
+                                        )} shadow-md`}
                                         style={{
                                             width: `${
                                                 (result.score / 10) * 100
@@ -364,9 +376,13 @@ export default function Home() {
 
                             {/* Rate Limit Info */}
                             {result.rateLimit && (
-                                <div className="text-center text-sm text-github-500">
-                                    GitHub API: {result.rateLimit.remaining}/
-                                    {result.rateLimit.limit} requests remaining
+                                <div className="text-center text-sm text-secondary bg-gray-100 dark:bg-gray-800 rounded-lg p-3">
+                                    <span className="flex items-center justify-center gap-2">
+                                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                                        </svg>
+                                        GitHub API: {result.rateLimit.remaining}/{result.rateLimit.limit} requests remaining
+                                    </span>
                                 </div>
                             )}
                         </div>
@@ -374,16 +390,34 @@ export default function Home() {
                 </main>
 
                 {/* Footer */}
-                <footer className="bg-white border-t border-gray-200 mt-16">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                        <div className="text-center text-github-500">
-                            <p>
-                                Built with Next.js, Tailwind CSS, and GitHub
-                                GraphQL API
+                <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-20">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                        <div className="text-center">
+                            <div className="flex justify-center items-center gap-6 mb-6">
+                                <div className="flex items-center gap-2 text-secondary">
+                                    <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                    </svg>
+                                    Next.js
+                                </div>
+                                <div className="flex items-center gap-2 text-secondary">
+                                    <svg className="w-5 h-5 text-cyan-500" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clipRule="evenodd" />
+                                    </svg>
+                                    Tailwind CSS
+                                </div>
+                                <div className="flex items-center gap-2 text-secondary">
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                    </svg>
+                                    GitHub GraphQL API
+                                </div>
+                            </div>
+                            <p className="text-secondary text-lg mb-2">
+                                Open source project for analysing repository quality metrics
                             </p>
-                            <p className="mt-2">
-                                Open source project for analyzing repository
-                                quality metrics
+                            <p className="text-sm text-secondary opacity-75">
+                                Enhanced with dark mode support and comprehensive scoring algorithms
                             </p>
                         </div>
                     </div>
