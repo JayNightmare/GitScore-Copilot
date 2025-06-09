@@ -52,7 +52,6 @@ const testData = {
         },
         object: { text: "# Test Repository\n\nThis is a test.\n\n## Usage\n\n```bash\nnpm install\n```" },
         contributingObject: { text: "# Contributing\n\nWe welcome contributions!" },
-        changelogObject: { text: "# Changelog\n\n## v1.0.0\n- Initial release" },
         hasIssuesEnabled: true,
         hasWikiEnabled: true,
         hasDiscussionsEnabled: true,
@@ -82,7 +81,7 @@ try {
     
     console.log("\n✅ Enhanced Data Collection Features Verified:");
     console.log("  • CONTRIBUTING.md file scoring");
-    console.log("  • CHANGELOG.md file scoring"); 
+    console.log("  • GitHub Releases counting"); 
     console.log("  • Unique contributor counting from commit history");
     console.log("  • Comprehensive documentation analysis");
     console.log("  • Community features detection");

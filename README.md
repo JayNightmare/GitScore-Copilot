@@ -12,12 +12,12 @@ A static site built with Next.js that analyzes and scores GitHub repositories ba
 
 ## Scoring Metrics
 
--   **README Quality** (20%): Documentation completeness, structure, examples
--   **CI/CD Workflows** (20%): Automated testing and deployment practices
--   **Popularity** (18%): Stars and community engagement
--   **License** (15%): Legal compliance and license type
--   **Activity** (15%): Recent commits and maintenance
--   **Development** (12%): Forks and contributor interest
+-   **Documentation** (20%): README quality, CONTRIBUTING guide, Code of Conduct, GitHub Releases
+-   **Maintenance & Activity** (20%): Recent commits, frequency, issue/PR management
+-   **Quality & Testing** (15%): CI pipeline, test coverage, linting, build status
+-   **Community & Collaboration** (15%): Contributors, discussions, response time
+-   **Popularity & Reach** (15%): Stars, forks, watchers, downloads
+-   **Security & Dependency Health** (15%): Vulnerability alerts, dependencies, signed commits
 
 ## Quick Start
 

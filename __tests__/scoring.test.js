@@ -124,16 +124,6 @@ We welcome contributions to this project! Please follow these guidelines:
 
 Please follow our code style guidelines.`
             },
-            changelogObject: {
-                text: `# Changelog
-
-## v1.2.0 - 2024-03-15
-- Added new features
-- Fixed bugs
-
-## v1.1.0 - 2024-02-10
-- Initial release`
-            },
             hasIssuesEnabled: true,
             hasWikiEnabled: true,
             hasProjectsEnabled: true,
@@ -232,7 +222,6 @@ Please follow our code style guidelines.`
                 object: null,
                 readmeObject: null,
                 contributingObject: null,
-                changelogObject: null,
             },
         };
 
@@ -240,7 +229,7 @@ Please follow our code style guidelines.`
             dataWithoutReadme,
             mockWorkflowData
         );
-        // Documentation score should be lower without README, CONTRIBUTING, and CHANGELOG
+        // Documentation score should be lower without README, CONTRIBUTING, and Releases
         expect(result.breakdown.documentation.score).toBeLessThan(5);
     });
 
