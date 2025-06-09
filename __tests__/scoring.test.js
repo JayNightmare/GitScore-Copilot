@@ -1,24 +1,35 @@
 /**
  * Unit tests for repository scoring algorithm
- * Tests individual metric calculations and overall scoring logic
+ * Tests individual category calculations and overall scoring logic
  */
 
 const { calculateRepositoryScore } = require("../lib/scoring.js");
 
-describe("Repository Scoring", () => {
+describe("Repository Scoring v2.0", () => {
     const mockRepoData = {
         repository: {
             name: "test-repo",
-            description: "A test repository",
+            description: "A test repository for testing purposes",
             url: "https://github.com/test/test-repo",
-            stargazerCount: 100,
-            forkCount: 20,
+            stargazerCount: 150,
+            forkCount: 25,
             pushedAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
+            watchers: { totalCount: 10 },
+            issues: { totalCount: 5 },
+            closedIssues: { totalCount: 20 },
+            pullRequests: { totalCount: 2 },
+            mergedPullRequests: { totalCount: 8 },
+            releases: { totalCount: 3 },
             licenseInfo: {
                 name: "MIT License",
                 key: "mit",
             },
+            codeOfConduct: {
+                name: "Contributor Covenant",
+                key: "contributor_covenant"
+            },
+            securityPolicyUrl: "https://github.com/test/test-repo/security/policy",
             repositoryTopics: {
                 nodes: [
                     { topic: { name: "javascript" } },
@@ -38,13 +49,34 @@ describe("Repository Scoring", () => {
                         nodes: [
                             {
                                 committedDate: new Date().toISOString(),
-                                author: { name: "Test" },
+                                author: { 
+                                    name: "Alice Developer",
+                                    email: "alice@example.com",
+                                    user: { login: "alice-dev" }
+                                },
+                                signature: { isValid: true }
                             },
                             {
                                 committedDate: new Date(
                                     Date.now() - 86400000
                                 ).toISOString(),
-                                author: { name: "Test" },
+                                author: { 
+                                    name: "Bob Contributor",
+                                    email: "bob@example.com",
+                                    user: { login: "bob-contrib" }
+                                },
+                                signature: { isValid: false }
+                            },
+                            {
+                                committedDate: new Date(
+                                    Date.now() - 2 * 86400000
+                                ).toISOString(),
+                                author: { 
+                                    name: "Charlie Coder",
+                                    email: "charlie@example.com",
+                                    user: { login: "charlie-codes" }
+                                },
+                                signature: { isValid: true }
                             },
                         ],
                     },
@@ -65,6 +97,7 @@ npm install
 
 \`\`\`javascript
 const test = require('./test');
+test.run();
 \`\`\`
 
 ## Contributing
@@ -75,9 +108,37 @@ Please read our contributing guidelines.
 
 MIT License`,
             },
+            contributingObject: {
+                text: `# Contributing Guidelines
+
+We welcome contributions to this project! Please follow these guidelines:
+
+## How to Contribute
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+## Code Style
+
+Please follow our code style guidelines.`
+            },
+            changelogObject: {
+                text: `# Changelog
+
+## v1.2.0 - 2024-03-15
+- Added new features
+- Fixed bugs
+
+## v1.1.0 - 2024-02-10
+- Initial release`
+            },
             hasIssuesEnabled: true,
             hasWikiEnabled: true,
             hasProjectsEnabled: true,
+            hasDiscussionsEnabled: true,
+            hasVulnerabilityAlertsEnabled: true,
         },
     };
 
@@ -104,43 +165,63 @@ MIT License`,
         expect(typeof result.score).toBe("number");
     });
 
-    test("includes all expected breakdown metrics", () => {
+    test("includes all expected breakdown categories", () => {
         const result = calculateRepositoryScore(mockRepoData, mockWorkflowData);
 
-        const expectedMetrics = [
-            "readme",
-            "license",
-            "stars",
-            "forks",
-            "commits",
-            "workflows",
-            "issues",
-            "topics",
-            "languages",
-            "freshness",
+        const expectedCategories = [
+            "documentation",
+            "maintenance", 
+            "quality",
+            "community",
+            "popularity",
+            "security"
         ];
 
-        expectedMetrics.forEach((metric) => {
-            expect(result.breakdown).toHaveProperty(metric);
-            expect(result.breakdown[metric]).toHaveProperty("score");
-            expect(result.breakdown[metric]).toHaveProperty("details");
-            expect(result.breakdown[metric]).toHaveProperty("weight");
+        expectedCategories.forEach((category) => {
+            expect(result.breakdown).toHaveProperty(category);
+            expect(result.breakdown[category]).toHaveProperty("score");
+            expect(result.breakdown[category]).toHaveProperty("details");
+            expect(result.breakdown[category]).toHaveProperty("weight");
+            expect(result.breakdown[category].score).toBeGreaterThanOrEqual(0);
+            expect(result.breakdown[category].score).toBeLessThanOrEqual(10);
         });
     });
 
-    test("scores README quality correctly", () => {
+    test("includes metadata about scoring version", () => {
         const result = calculateRepositoryScore(mockRepoData, mockWorkflowData);
-        const readmeScore = result.breakdown.readme.score;
-
-        expect(readmeScore).toBeGreaterThan(2); // Should score reasonably for the test README
-        expect(readmeScore).toBeLessThanOrEqual(10);
+        
+        expect(result.metadata).toHaveProperty("scoringVersion");
+        expect(result.metadata).toHaveProperty("categories");
+        expect(result.metadata).toHaveProperty("weights");
+        expect(result.metadata).toHaveProperty("calculatedAt");
+        expect(result.metadata.scoringVersion).toBe("2.0");
     });
 
-    test("scores license correctly", () => {
+    test("scores documentation category correctly", () => {
         const result = calculateRepositoryScore(mockRepoData, mockWorkflowData);
-        const licenseScore = result.breakdown.license.score;
+        const docScore = result.breakdown.documentation.score;
 
-        expect(licenseScore).toBe(10); // MIT is a popular license
+        // Documentation should score well with good README, CoC, and releases
+        expect(docScore).toBeGreaterThan(2); // Should score reasonably for the test README
+        expect(docScore).toBeLessThanOrEqual(10);
+    });
+
+    test("scores maintenance category correctly", () => {
+        const result = calculateRepositoryScore(mockRepoData, mockWorkflowData);
+        const maintenanceScore = result.breakdown.maintenance.score;
+
+        // Should score well with recent commits and good issue/PR management
+        expect(maintenanceScore).toBeGreaterThan(0);
+        expect(maintenanceScore).toBeLessThanOrEqual(10);
+    });
+
+    test("scores popularity category correctly", () => {
+        const result = calculateRepositoryScore(mockRepoData, mockWorkflowData);
+        const popularityScore = result.breakdown.popularity.score;
+
+        // Should score based on stars, forks, watchers
+        expect(popularityScore).toBeGreaterThan(0);
+        expect(popularityScore).toBeLessThanOrEqual(10);
     });
 
     test("handles repository without README", () => {
@@ -150,6 +231,8 @@ MIT License`,
                 ...mockRepoData.repository,
                 object: null,
                 readmeObject: null,
+                contributingObject: null,
+                changelogObject: null,
             },
         };
 
@@ -157,61 +240,49 @@ MIT License`,
             dataWithoutReadme,
             mockWorkflowData
         );
-        expect(result.breakdown.readme.score).toBe(0);
+        // Documentation score should be lower without README, CONTRIBUTING, and CHANGELOG
+        expect(result.breakdown.documentation.score).toBeLessThan(5);
     });
 
-    test("handles repository without license", () => {
-        const dataWithoutLicense = {
-            ...mockRepoData,
+    test("handles repository without workflows", () => {
+        const dataWithoutWorkflows = {
             repository: {
-                ...mockRepoData.repository,
-                licenseInfo: null,
+                object: {
+                    entries: [],
+                },
             },
         };
 
         const result = calculateRepositoryScore(
-            dataWithoutLicense,
-            mockWorkflowData
+            mockRepoData,
+            dataWithoutWorkflows
         );
-        expect(result.breakdown.license.score).toBe(0);
+        // Quality score should be lower without CI/CD
+        expect(result.breakdown.quality.score).toBeLessThan(7);
     });
 
-    test("handles repository without workflows", () => {
-        const result = calculateRepositoryScore(mockRepoData, null);
-        expect(result.breakdown.workflows.score).toBe(0);
-    });
-
-    test("scores stars on logarithmic scale", () => {
-        const highStarData = {
+    test("handles repository with high popularity metrics", () => {
+        const highPopularityData = {
             ...mockRepoData,
             repository: {
                 ...mockRepoData.repository,
-                stargazerCount: 10000,
+                stargazerCount: 5000,
+                forkCount: 500,
+                watchers: { totalCount: 100 }
             },
         };
 
-        const result = calculateRepositoryScore(highStarData, mockWorkflowData);
-        expect(result.breakdown.stars.score).toBe(10);
+        const result = calculateRepositoryScore(highPopularityData, mockWorkflowData);
+        expect(result.breakdown.popularity.score).toBeGreaterThan(7);
     });
 
-    test("penalizes stale repositories", () => {
-        const staleData = {
-            ...mockRepoData,
-            repository: {
-                ...mockRepoData.repository,
-                pushedAt: new Date(
-                    Date.now() - 365 * 24 * 60 * 60 * 1000 * 2
-                ).toISOString(), // 2 years ago
-            },
-        };
-
-        const result = calculateRepositoryScore(staleData, mockWorkflowData);
-        expect(result.breakdown.freshness.score).toBeLessThan(3);
-    });
-
-    test("rewards recent activity", () => {
+    test("rewards repositories with good community features", () => {
         const result = calculateRepositoryScore(mockRepoData, mockWorkflowData);
-        expect(result.breakdown.freshness.score).toBeGreaterThan(8); // Recently updated
+        const communityScore = result.breakdown.community.score;
+        
+        // Should score well with multiple contributors, discussions, and CoC
+        expect(communityScore).toBeGreaterThan(3);
+        expect(communityScore).toBeLessThanOrEqual(10);
     });
 
     test("validates score bounds", () => {
