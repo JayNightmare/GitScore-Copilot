@@ -333,7 +333,7 @@ export default function Home() {
 
                             {/* Score Breakdown */}
                             <div className="score-card">
-                                <h3 className="text-lg font-semibold text-github-700 mb-4">
+                                <h3 className="text-lg font-semibold text-primary mb-4">
                                     Score Breakdown
                                 </h3>
                                 <div className="space-y-3">
@@ -345,7 +345,7 @@ export default function Home() {
                                             >
                                                 <div className="flex-1">
                                                     <div className="flex items-center justify-between">
-                                                        <span className="font-medium text-github-800 capitalize">
+                                                        <span className="font-medium text-primary capitalize">
                                                             {key
                                                                 .replace(
                                                                     /([A-Z])/g,
@@ -364,7 +364,7 @@ export default function Home() {
                                                             /10
                                                         </span>
                                                     </div>
-                                                    <p className="text-sm text-github-500 mt-1">
+                                                    <p className="text-sm text-secondary mt-1">
                                                         {metric.details}
                                                     </p>
                                                 </div>
