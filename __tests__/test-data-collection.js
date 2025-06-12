@@ -2,7 +2,7 @@
  * Manual test script to verify enhanced data collection
  */
 
-const { calculateRepositoryScore } = require('./lib/scoring.js');
+const { calculateRepositoryScore } = require('../lib/scoring.js');
 
 console.log("🧪 Testing Enhanced Data Collection for GitHub Repository Scoring");
 console.log("================================================================");

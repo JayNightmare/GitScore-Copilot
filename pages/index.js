@@ -16,6 +16,7 @@ export default function Home() {
     const [result, setResult] = useState(null);
     const [error, setError] = useState(null);
     const [showTokenInput, setShowTokenInput] = useState(true);
+    const [tokenValidation, setTokenValidation] = useState(null);
     const { darkMode, toggleDarkMode } = useDarkMode();
 
     const handleSubmit = async (e) => {
@@ -47,7 +48,11 @@ export default function Home() {
 
         try {
             // Initialise service with token
-            GitHubScorerService.initialize(githubToken);
+            await GitHubScorerService.initialize(githubToken);
+
+            // Get token validation results
+            const validation = GitHubScorerService.getTokenValidation();
+            setTokenValidation(validation);
 
             // Calculate score
             const data = await GitHubScorerService.calculateScore(owner, repo);
@@ -57,6 +62,7 @@ export default function Home() {
             setShowTokenInput(false);
         } catch (err) {
             setError(err.message);
+            setTokenValidation(null);
         } finally {
             setLoading(false);
         }
@@ -163,47 +169,25 @@ export default function Home() {
                                         >
                                             GitHub Settings
                                         </a>{" "}
-                                        with &apos;public_repo&apos; scope
+                                        with &apos;public_repo&apos; scope (or &apos;repo&apos; for private repositories)
                                     </p>
                                     <p className="text-xs text-secondary">
-                                        <span className="text-red-500">
-                                            Warning:
+                                        <span className="text-amber-600 dark:text-amber-400 font-medium">
+                                            Token Requirements:
                                         </span>{" "}
-                                        Do not share your token publicly.
-                                        Keep it secure.
-                                        If you suspect it has been compromised, revoke it immediately.
-                                        <br />
-                                        <span className="text-red-500">
-                                            Note:
-                                        </span>{" "}
-                                        This token is used to access the GitHub API and retrieve repository data.
-                                        It is not stored or logged by this application.
-                                        <br />
-                                        <span className="text-red-500">
-                                            Important:
-                                        </span>{" "}
-                                        Ensure you have the necessary permissions to access the repository data.
-                                        <br />
-                                        <span className="text-red-500">
-                                            Caution:
-                                        </span>{" "}
-                                        This application does not store your token or any sensitive information.
-                                        It is used solely for the purpose of fetching repository data from GitHub.
+                                        Only &apos;public_repo&apos; or &apos;repo&apos; permissions are required. 
+                                        Additional permissions will trigger a warning but won&apos;t prevent analysis.
                                         <br />
                                         <span className="text-red-500">
                                             Disclaimer:
                                         </span>{" "}
-                                        This application is not affiliated with GitHub and does not guarantee the security of your token.
-                                        Use it at your own risk.
+                                        Do not share your token publicly. Keep it secure. If you suspect it has been compromised, revoke it immediately. This application is not affiliated with GitHub and does not guarantee the security of your token. Use it at your own risk.
                                     </p>
                                 </div>
                             )}
                             <div className="space-y-2">
-                                <label
-                                    htmlFor="repo-input"
-                                    className="block text-sm font-semibold text-primary mb-2"
-                                >
-                                    Repository URL or Owner/Repository
+                                <label htmlFor="repo-input" className="block text-sm font-semibold text-primary mb-2">
+                                    Repository URL or Owner/Repository <span className="text-secondary text-xs">(e.g, github.com/facebook/react or facebook/react)</span>
                                 </label>
                                 <input
                                     id="repo-input"
@@ -217,25 +201,49 @@ export default function Home() {
                             </div>
                             <button
                                 type="submit"
-                                disabled={
-                                    loading ||
-                                    !input.trim() ||
-                                    (showTokenInput && !githubToken.trim())
-                                }
+                                disabled={ loading || !input.trim() || (showTokenInput && !githubToken.trim()) }
                                 className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {loading
-                                    ? "Analysing Repository..."
-                                    : "Analyse Repository"}
+                                {loading ? "Analysing Repository..." : "Analyse Repository"}
                             </button>
                             {!showTokenInput && (
-                                <button
-                                    type="button"
-                                    onClick={() => setShowTokenInput(true)}
-                                    className="btn-secondary text-sm mt-2"
-                                >
-                                    Change GitHub Token
-                                </button>
+                                <div className="flex flex-col space-y-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setShowTokenInput(true);
+                                            setTokenValidation(null);
+                                        }}
+                                        className="btn-secondary text-sm mt-2"
+                                    >
+                                        Change GitHub Token
+                                    </button>
+                                    {tokenValidation?.hasExtraPermissions && (
+                                        <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 animate-fade-in">
+                                            <div className="flex items-start">
+                                                <div className="flex-shrink-0">
+                                                    <svg className="h-4 w-4 text-amber-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                    </svg>
+                                                </div>
+                                                <div className="ml-2">
+                                                    <h4 className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                                                        Token Security Warning
+                                                    </h4>
+                                                    <p className="text-xs text-amber-700 dark:text-amber-300 mt-1">
+                                                        Your token has extra permissions:
+                                                        <br />
+                                                        <br />
+                                                        <span className="font-mono">{tokenValidation.extras.join(', ')}</span>
+                                                        <br />
+                                                        <br />
+                                                        Consider using a token with only <span className="font-mono">public_repo</span> or <span className="font-mono">repo</span> permissions for better security.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             )}
                         </form>
                     </div>
