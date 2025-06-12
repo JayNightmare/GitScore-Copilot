@@ -165,6 +165,37 @@ export default function Home() {
                                         </a>{" "}
                                         with &apos;public_repo&apos; scope
                                     </p>
+                                    <p className="text-xs text-secondary">
+                                        <span className="text-red-500">
+                                            Warning:
+                                        </span>{" "}
+                                        Do not share your token publicly.
+                                        Keep it secure.
+                                        If you suspect it has been compromised, revoke it immediately.
+                                        <br />
+                                        <span className="text-red-500">
+                                            Note:
+                                        </span>{" "}
+                                        This token is used to access the GitHub API and retrieve repository data.
+                                        It is not stored or logged by this application.
+                                        <br />
+                                        <span className="text-red-500">
+                                            Important:
+                                        </span>{" "}
+                                        Ensure you have the necessary permissions to access the repository data.
+                                        <br />
+                                        <span className="text-red-500">
+                                            Caution:
+                                        </span>{" "}
+                                        This application does not store your token or any sensitive information.
+                                        It is used solely for the purpose of fetching repository data from GitHub.
+                                        <br />
+                                        <span className="text-red-500">
+                                            Disclaimer:
+                                        </span>{" "}
+                                        This application is not affiliated with GitHub and does not guarantee the security of your token.
+                                        Use it at your own risk.
+                                    </p>
                                 </div>
                             )}
                             <div className="space-y-2">
