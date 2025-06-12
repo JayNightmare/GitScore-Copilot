@@ -1,0 +1,17 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"                  # Root directory (where your package.json is)
+    schedule:
+      interval: "weekly"            # Check for updates every week
+    open-pull-requests-limit: 5     # Optional: limit number of PRs at once
+    commit-message:
+      prefix: "deps"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"                  # Location of GitHub Actions workflows
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"
