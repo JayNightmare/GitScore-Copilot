@@ -3,7 +3,7 @@
  * Tests individual category calculations and overall scoring logic
  */
 
-const { calculateRepositoryScore } = require("../lib/scoring.js");
+const { calculateRepositoryScore } = require("../../lib/scoring.js");
 
 describe("Repository Scoring v2.0", () => {
     const mockRepoData = {
