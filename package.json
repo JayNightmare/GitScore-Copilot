@@ -1,6 +1,6 @@
 {
-    "name": "GitScore-Copilot",
-    "version": "1.0.0",
+    "name": "gitscore-copilot",
+    "version": "0.2.3",
     "description": "A static GitHub repository scoring site that runs on GitHub Pages",
     "private": true,
     "scripts": {
